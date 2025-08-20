@@ -114,3 +114,32 @@ func (h *TaskHandler) UpdateTask(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *TaskHandler) DeleteTask(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid task ID"})
+		return
+	}
+
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
+	taskIndex := -1
+	for i, task := range h.tasks {
+		if task.ID == id {
+			taskIndex = i
+			break
+		}
+	}
+
+	if taskIndex == -1 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
+		return
+	}
+
+	h.tasks = append(h.tasks[:taskIndex], h.tasks[taskIndex+1:]...)
+
+	c.JSON(http.StatusNoContent, nil)
+}

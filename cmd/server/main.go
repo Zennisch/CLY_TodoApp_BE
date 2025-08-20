@@ -12,5 +12,9 @@ func main() {
 
 	routes.SetupDefaultRoutes(router)
 
+	v1 := router.Group("/api/v1")
+	taskHandler := handlers.NewTaskHandler()
+	routes.SetupTaskRoutes(v1, taskHandler)
+
 	router.Run(":8000")
 }

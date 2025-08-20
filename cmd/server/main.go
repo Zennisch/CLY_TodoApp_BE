@@ -1,7 +1,8 @@
 package main
 
 import (
-	"net/http"
+	"CLY_TodoApp_BE/internal/handlers"
+	"CLY_TodoApp_BE/internal/routes"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,9 +10,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "healthy"})
-	})
+	routes.SetupDefaultRoutes(router)
 
 	router.Run(":8000")
 }

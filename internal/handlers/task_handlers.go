@@ -50,6 +50,23 @@ func (h *TaskHandler) CreateTask(c *gin.Context) {
 		Task: &task,
 	}
 
-	// Trả về phản hồi với mã trạng thái 201 Created
 	c.JSON(http.StatusCreated, response)
+}
+
+func (h *TaskHandler) GetTasks(c *gin.Context) {
+	// Khóa mutex để đảm bảo an toàn khi truy cập danh sách tasks trong khi không có luồng nào khác đang sửa đổi nó
+	h.mutex.RLock()
+	defer h.mutex.RUnlock()
+
+	// Chuyển đổi danh sách tasks thành danh sách con trỏ để trả về
+	taskPointers := make([]*models.Task, len(h.tasks))
+	for i := range h.tasks {
+		taskPointers[i] = &h.tasks[i]
+	}
+
+	response := models.GetTasksResponse{
+		Tasks: taskPointers,
+	}
+
+	c.JSON(http.StatusOK, response)
 }

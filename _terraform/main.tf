@@ -48,3 +48,16 @@ resource "google_compute_firewall" "allow_app_ports_8000" {
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["allow-app-ports"]
 }
+
+resource "google_compute_firewall" "allow_app_ports_443" {
+  name    = "allow-app-ports-443-jec"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["allow-app-ports"]
+}

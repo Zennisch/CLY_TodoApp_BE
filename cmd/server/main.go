@@ -1,6 +1,7 @@
 package main
 
 import (
+	"CLY_TodoApp_BE/internal/config"
 	"CLY_TodoApp_BE/internal/handlers"
 	"CLY_TodoApp_BE/internal/routes"
 
@@ -8,6 +9,8 @@ import (
 )
 
 func main() {
+	cfg := config.LoadConfig()
+
 	router := gin.Default()
 
 	routes.SetupDefaultRoutes(router)
@@ -16,5 +19,5 @@ func main() {
 	taskHandler := handlers.NewTaskHandler()
 	routes.SetupTaskRoutes(v1, taskHandler)
 
-	router.Run(":8000")
+	router.Run(cfg.Host + ":" + cfg.Port)
 }

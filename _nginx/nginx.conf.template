@@ -75,16 +75,33 @@ http {
         ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
         ssl_prefer_server_ciphers off;
 
-        # HSTS
-        add_header Strict-Transport-Security "max-age=63072000" always;
-
-        # Security headers
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-        add_header Content-Security-Policy "default-src 'self';";
-        add_header X-Frame-Options "SAMEORIGIN";
-        add_header X-Content-Type-Options "nosniff";
-        add_header Referrer-Policy "strict-origin-when-cross-origin";
-        add_header Permissions-Policy "geolocation=(), microphone=(), camera=()";
+        # COMPREHENSIVE SECURITY HEADERS
+        
+        # HSTS - HTTP Strict Transport Security (fixed duplicate)
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+        
+        # Content Security Policy - More flexible for web apps
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https: data:; connect-src 'self' https: wss: ws:; media-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'self';" always;
+        
+        # X-Frame-Options - Prevent clickjacking
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        
+        # X-Content-Type-Options - Prevent MIME type sniffing
+        add_header X-Content-Type-Options "nosniff" always;
+        
+        # Referrer Policy - Control referrer information
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        
+        # Permissions Policy - Control browser features
+        add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), vr=(), accelerometer=(), gyroscope=(), magnetometer=(), clipboard-read=(), clipboard-write=(self)" always;
+        
+        # Additional security headers
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header X-Download-Options "noopen" always;
+        add_header X-Permitted-Cross-Domain-Policies "none" always;
+        add_header Cross-Origin-Embedder-Policy "require-corp" always;
+        add_header Cross-Origin-Opener-Policy "same-origin" always;
+        add_header Cross-Origin-Resource-Policy "same-site" always;
 
         # Main API location
         location / {

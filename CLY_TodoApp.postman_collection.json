@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "809b6f41-9906-4240-b17f-1f5b78f5ac83",
+		"name": "CLY_TodoApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43823953",
+		"_collection_link": "https://cosmicreina-7533821.postman.co/workspace/CosmicReina's-Workspace~655302e2-2174-4353-8647-ddc3fd84db8d/collection/43823953-809b6f41-9906-4240-b17f-1f5b78f5ac83?action=share&source=collection_link&creator=43823953"
+	},
+	"item": [
+		{
+			"name": "CreateTask",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Task\",\r\n    \"description\": \"Desc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/tasks",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/tasks",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateTask",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"completed\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/tasks/1",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteTask",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"completed\": true\r\n}"
+				},
+				"url": {
+					"raw": "{{HOST}}/tasks/1",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

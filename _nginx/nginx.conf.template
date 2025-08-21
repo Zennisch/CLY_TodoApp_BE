@@ -41,7 +41,7 @@ http {
     # HTTP server - redirect to HTTPS
     server {
         listen 80;
-        server_name cty-todo-app-be.duckdns.org;
+        server_name ${DOMAIN};
 
         # ACME challenge for Let's Encrypt
         location /.well-known/acme-challenge/ {
@@ -59,11 +59,11 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
         http2 on;
-        server_name cty-todo-app-be.duckdns.org;
+        server_name ${DOMAIN};
 
         # SSL configuration
-        ssl_certificate /etc/letsencrypt/live/cty-todo-app-be.duckdns.org/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/cty-todo-app-be.duckdns.org/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
 
         # SSL settings
         ssl_session_timeout 1d;
@@ -85,7 +85,6 @@ http {
         add_header Referrer-Policy "strict-origin-when-cross-origin";
 
         # CORS headers for API
-        # add_header Access-Control-Allow-Origin "https://cly-todo-app-fe.vercel.app" always;
         add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
         add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With" always;
         add_header Access-Control-Allow-Credentials true always;
@@ -93,7 +92,7 @@ http {
         # Handle preflight requests
         location / {
             if ($request_method = 'OPTIONS') {
-                add_header Access-Control-Allow-Origin "https://cly-todo-app-fe.vercel.app";
+                add_header Access-Control-Allow-Origin "${FRONTEND_DOMAIN}";
                 add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS";
                 add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With";
                 add_header Access-Control-Allow-Credentials true;
@@ -105,6 +104,9 @@ http {
 
             # Rate limiting
             limit_req zone=api burst=20 nodelay;
+
+            # Add CORS origin header for actual requests
+            add_header Access-Control-Allow-Origin "${FRONTEND_DOMAIN}" always;
 
             # Proxy settings
             proxy_pass http://backend;

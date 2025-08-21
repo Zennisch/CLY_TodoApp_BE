@@ -2,13 +2,12 @@
 
 echo "Starting Nginx reverse proxy..."
 echo "Domain: ${DOMAIN}"
-echo "Frontend Domain: ${FRONTEND_DOMAIN}"
 
 # Initialize SSL certificates if needed
 /usr/local/bin/init-ssl.sh
 
 # Generate nginx.conf from template with environment variables
-envsubst '${DOMAIN} ${FRONTEND_DOMAIN}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+envsubst '${DOMAIN}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
 nginx -g 'daemon off;' &
 NGINX_PID=$!
